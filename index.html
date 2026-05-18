@@ -2,12 +2,75 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CoffeeLegend — Engineering The Perfect Extraction</title>
+
+    <!-- ── Favicon & App Icons ── -->
+    <link rel="icon" type="image/png" href="/Logo.png" />
+    <link rel="apple-touch-icon" href="/Logo.png" />
+    <meta name="theme-color" content="#0052b4" />
+
+    <!-- ── Primary SEO ── -->
+    <title>Coffee Legend | Premium Blend Coffee — Cabadbaran City</title>
+    <meta name="description" content="Coffee Legend serves premium blend, single-origin coffee in Cabadbaran City, Agusan del Norte. Precision roasted daily. Open Monday–Saturday, 5:00 PM – 12:00 AM." />
+    <meta name="keywords" content="Coffee Legend, coffee shop Cabadbaran, premium coffee Agusan del Norte, espresso, oat latte, reserve coffee, specialty coffee Philippines" />
+    <meta name="author" content="Coffee Legend" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- ── Open Graph (Facebook, LinkedIn, Messenger) ── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Coffee Legend" />
+    <meta property="og:title" content="Coffee Legend | Premium Blend Coffee — Cabadbaran City" />
+    <meta property="og:description" content="Single origin. Precision roasted. Every cup is nothing short of legendary. Find us in Cabadbaran City, Agusan del Norte." />
+    <meta property="og:image" content="/Logo.png" />
+    <meta property="og:locale" content="en_PH" />
+    <!-- Update og:url to your actual domain before going live -->
+    <!-- <meta property="og:url" content="https://yourdomain.com" /> -->
+
+    <!-- ── Twitter / X Card ── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Coffee Legend | Premium Blend Coffee" />
+    <meta name="twitter:description" content="Single origin. Precision roasted. Every cup is nothing short of legendary." />
+    <meta name="twitter:image" content="/Logo.png" />
+
+    <!-- ── Fonts ── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- ── Local Business Structured Data (Google Rich Results) ── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CafeOrCoffeeShop",
+      "name": "Coffee Legend",
+      "description": "Premium blend coffee shop serving single-origin, precision-roasted coffee in Cabadbaran City, Agusan del Norte, Philippines.",
+      "image": "/Logo.png",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Kauswagan",
+        "addressLocality": "Cabadbaran City",
+        "addressRegion": "Agusan del Norte",
+        "addressCountry": "PH"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 9.1333883,
+        "longitude": 125.5356866
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+          "opens": "17:00",
+          "closes": "00:00"
+        }
+      ],
+      "servesCuisine": ["Coffee", "Espresso", "Specialty Coffee"],
+      "priceRange": "₱₱",
+      "hasMap": "https://maps.app.goo.gl/vgFBZ2pCura18TAx7",
+      "sameAs": []
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
