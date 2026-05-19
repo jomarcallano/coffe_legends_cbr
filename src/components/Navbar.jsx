@@ -32,7 +32,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <a
             href="#location"
             className="flex items-center gap-1.5
@@ -46,27 +46,33 @@ export default function Navbar() {
             <ArrowRight className="w-3 h-3" />
           </a>
           <button
-            className="md:hidden p-2 rounded-lg hover:bg-stone-50 transition-colors"
+            type="button"
+            className="md:hidden -mr-2 flex items-center justify-center
+                       w-11 h-11 rounded-lg
+                       hover:bg-stone-50 active:bg-stone-100
+                       transition-colors touch-manipulation"
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
+            aria-expanded={open}
           >
             {open
-              ? <X className="w-5 h-5 text-[#1a1a1a]" />
-              : <Menu className="w-5 h-5 text-[#1a1a1a]" />
+              ? <X className="w-6 h-6 text-[#1a1a1a] pointer-events-none" />
+              : <Menu className="w-6 h-6 text-[#1a1a1a] pointer-events-none" />
             }
           </button>
         </div>
       </div>
 
       {open && (
-        <div className="md:hidden bg-white border-t border-stone-100 px-6 py-5 flex flex-col gap-4">
+        <div className="md:hidden bg-white border-t border-stone-100 px-4 py-2 flex flex-col shadow-lg">
           {navLinks.map(({ label, href }) => (
             <a
               key={label}
               href={href}
               onClick={() => setOpen(false)}
               className="text-[11px] font-bold uppercase tracking-[0.14em]
-                         text-[#737373] hover:text-[#1a1a1a] transition-colors py-1"
+                         text-[#737373] hover:text-[#1a1a1a] active:bg-stone-100
+                         transition-colors rounded-lg px-3 py-4 touch-manipulation"
             >
               {label}
             </a>

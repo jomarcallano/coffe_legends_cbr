@@ -35,3 +35,6 @@ body {
 .animate-marquee {
   animation: marquee 38s linear infinite;
 }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
