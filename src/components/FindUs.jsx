@@ -1,15 +1,38 @@
+import { useEffect, useRef, useState } from 'react'
+
 const hours = [
   { day: 'Monday – Saturday', time: '5:00 PM – 12:00 AM' },
   { day: 'Sunday',            time: 'Closed'             },
 ]
 
 export default function FindUs() {
+  const sectionRef = useRef(null)
+  const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    const target = sectionRef.current
+    if (!target) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setRevealed(true)
+          observer.unobserve(target)
+        }
+      },
+      { threshold: 0.15 }
+    )
+    observer.observe(target)
+    return () => observer.disconnect()
+  }, [])
+
+  const stageClass = revealed ? 'is-revealed' : ''
+
   return (
-    <section id="location" className="bg-white py-24">
+    <section ref={sectionRef} id="location" className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
 
         {/* Header */}
-        <div className="mb-14">
+        <div className={`findus-fadeup findus-step-1 ${stageClass} mb-14`}>
           <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#0052b4]">
             Our Location
           </span>
@@ -24,7 +47,7 @@ export default function FindUs() {
           <div className="flex flex-col divide-y divide-stone-100">
 
             {/* Address */}
-            <div className="pb-8">
+            <div className={`findus-fadeup findus-step-2 ${stageClass} pb-8`}>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-3">
                 Address
               </p>
@@ -37,7 +60,7 @@ export default function FindUs() {
             </div>
 
             {/* Hours */}
-            <div className="py-8">
+            <div className={`findus-fadeup findus-step-3 ${stageClass} py-8`}>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-4">
                 Opening Hours
               </p>
@@ -54,7 +77,7 @@ export default function FindUs() {
             </div>
 
             {/* Directions CTA */}
-            <div className="pt-8">
+            <div className={`findus-fadeup findus-step-4 ${stageClass} pt-8`}>
               <a
                 href="https://maps.app.goo.gl/vgFBZ2pCura18TAx7"
                 target="_blank"
@@ -72,7 +95,8 @@ export default function FindUs() {
           </div>
 
           {/* Right: Map */}
-          <div className="rounded-2xl overflow-hidden h-[400px] bg-stone-50">
+          <div className={`findus-map findus-fadeup findus-step-5 ${stageClass}
+                          rounded-2xl overflow-hidden h-[400px] bg-stone-50`}>
             <iframe
               title="Coffee Legend Location"
               src="https://maps.google.com/maps?q=9.1333883,125.5356866&z=16&output=embed"
@@ -87,6 +111,35 @@ export default function FindUs() {
 
         </div>
       </div>
+
+      <style>{`
+        .findus-map {
+          transition: transform 400ms cubic-bezier(.22,.61,.36,1),
+                      box-shadow 400ms cubic-bezier(.22,.61,.36,1);
+        }
+        .findus-map:hover {
+          transform: scale(1.01);
+          box-shadow: 0 24px 50px -28px rgba(0,82,180,0.25);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          @keyframes findus-fadeup {
+            from { opacity: 0; transform: translateY(18px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          .findus-fadeup:not(.is-revealed) {
+            opacity: 0;
+          }
+          .findus-fadeup.is-revealed {
+            animation: findus-fadeup 700ms cubic-bezier(.22,.61,.36,1) both;
+          }
+          .findus-step-1.is-revealed { animation-delay: 0ms;   }
+          .findus-step-2.is-revealed { animation-delay: 100ms; }
+          .findus-step-3.is-revealed { animation-delay: 180ms; }
+          .findus-step-4.is-revealed { animation-delay: 260ms; }
+          .findus-step-5.is-revealed { animation-delay: 320ms; }
+        }
+      `}</style>
     </section>
   )
 }

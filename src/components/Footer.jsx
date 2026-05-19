@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import Logo from '../assets/Logo.png'
 
 const InstagramIcon = () => (
@@ -32,8 +33,29 @@ const footerLinks = {
 }
 
 export default function Footer() {
+  const footerRef = useRef(null)
+  const [revealed, setRevealed] = useState(false)
+
+  useEffect(() => {
+    const target = footerRef.current
+    if (!target) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setRevealed(true)
+          observer.unobserve(target)
+        }
+      },
+      { threshold: 0.1 }
+    )
+    observer.observe(target)
+    return () => observer.disconnect()
+  }, [])
+
+  const stage = revealed ? 'is-revealed' : ''
+
   return (
-    <footer className="bg-[#141414] text-white">
+    <footer ref={footerRef} className="bg-[#141414] text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-10 pt-16 pb-10">
 
         {/* Main grid */}
@@ -41,20 +63,23 @@ export default function Footer() {
 
           {/* Brand column */}
           <div className="flex flex-col gap-5">
-            <img src={Logo} alt="Coffee Legend" className="h-14 w-14 rounded-full object-cover" />
-            <p className="text-sm font-medium leading-relaxed text-stone-500 max-w-[240px]">
+            <img
+              src={Logo}
+              alt="Coffee Legend"
+              className={`footer-fadeup footer-step-1 ${stage} h-14 w-14 rounded-full object-cover`}
+            />
+            <p className={`footer-fadeup footer-step-2 ${stage} text-sm font-medium leading-relaxed text-stone-500 max-w-[240px]`}>
               Precision roasted, legendarily brewed.
               Every cup is a commitment to quality.
             </p>
-            <div className="flex items-center gap-2.5 mt-1">
+            <div className={`footer-fadeup footer-step-3 ${stage} flex items-center gap-2.5 mt-1`}>
               {socials.map(({ Icon, label }) => (
                 <button
                   key={label}
                   aria-label={label}
-                  className="w-9 h-9 rounded-full border border-white/10
-                             hover:border-white/25 hover:bg-white/5
+                  className="footer-social w-9 h-9 rounded-full border border-white/10
                              flex items-center justify-center
-                             transition-all duration-200 text-stone-500 hover:text-stone-300"
+                             text-stone-500"
                 >
                   <Icon />
                 </button>
@@ -63,8 +88,10 @@ export default function Footer() {
           </div>
 
           {/* Link columns */}
-          {Object.entries(footerLinks).map(([heading, links]) => (
-            <div key={heading}>
+          {Object.entries(footerLinks).map(([heading, links], colIdx) => (
+            <div key={heading}
+                 className={`footer-fadeup ${stage}`}
+                 style={{ animationDelay: `${240 + colIdx * 80}ms` }}>
               <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-stone-600 mb-5">
                 {heading}
               </h4>
@@ -73,7 +100,7 @@ export default function Footer() {
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-sm font-medium text-stone-500 hover:text-white transition-colors duration-200"
+                      className="footer-link relative inline-block text-sm font-medium text-stone-500 hover:text-white transition-colors duration-200"
                     >
                       {link}
                     </a>
@@ -85,7 +112,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8">
+        <div className={`footer-fadeup footer-step-bottom ${stage}
+                        flex flex-col sm:flex-row items-center justify-between gap-4 pt-8`}>
           <p className="text-[11px] font-medium text-stone-600">
             © 2026 Coffee Legend™. All rights reserved.
           </p>
@@ -94,7 +122,7 @@ export default function Footer() {
               <a
                 key={link}
                 href="#"
-                className="text-[11px] font-medium text-stone-600 hover:text-stone-400 transition-colors duration-200"
+                className="footer-link relative inline-block text-[11px] font-medium text-stone-600 hover:text-stone-400 transition-colors duration-200"
               >
                 {link}
               </a>
@@ -103,6 +131,54 @@ export default function Footer() {
         </div>
 
       </div>
+
+      <style>{`
+        .footer-link::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -2px;
+          width: 0;
+          height: 1px;
+          background: rgba(255,255,255,0.4);
+          transition: width 300ms cubic-bezier(.22,.61,.36,1);
+        }
+        .footer-link:hover::after {
+          width: 100%;
+        }
+
+        .footer-social {
+          transition: transform 250ms cubic-bezier(.22,.61,.36,1),
+                      border-color 250ms ease,
+                      background-color 250ms ease,
+                      color 250ms ease,
+                      box-shadow 250ms ease;
+        }
+        .footer-social:hover {
+          transform: translateY(-2px);
+          color: rgb(214 211 209);
+          border-color: rgba(255,255,255,0.25);
+          background-color: rgba(255,255,255,0.05);
+          box-shadow: 0 0 0 4px rgba(255,255,255,0.06);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          @keyframes footer-fadeup {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          .footer-fadeup:not(.is-revealed) {
+            opacity: 0;
+          }
+          .footer-fadeup.is-revealed {
+            animation: footer-fadeup 600ms cubic-bezier(.22,.61,.36,1) both;
+          }
+          .footer-step-1.is-revealed      { animation-delay: 0ms;   }
+          .footer-step-2.is-revealed      { animation-delay: 80ms;  }
+          .footer-step-3.is-revealed      { animation-delay: 160ms; }
+          .footer-step-bottom.is-revealed { animation-delay: 500ms; }
+        }
+      `}</style>
     </footer>
   )
 }
